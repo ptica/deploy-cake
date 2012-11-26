@@ -30,9 +30,13 @@ Class VhostShell extends Shell {
 
 	public function create() {
 		// vars used in the template
-		$domain  = 'klik';//$this->args[0];
+		$domain  = $this->args[0];
 		$webroot = WWW_ROOT;
 		$logpath = ROOT . DS . APP_DIR . DS . 'tmp' . DS . 'logs' . DS;
+		
+		// BEWARE win apache also needs unix DS
+		$webroot = str_replace('\\', '/', $webroot);
+		$logpath = str_replace('\\', '/', $logpath);
 
 		$template = 'apache';
 		if (!empty($this->params['t']) && is_file($this->_getTemplatePath($this->params['t']) . $this->params['t'] . '.ctp')) {
@@ -46,7 +50,7 @@ Class VhostShell extends Shell {
 
 		$this->out($conf);
 		
-		$this->createFile(ROOT . DS . APP_DIR . DS . 'config' . DS . 'vhost' . DS . $domain, $conf);
+		$this->createFile(ROOT . DS . APP_DIR . DS . 'config' . DS . 'vhost' . DS . $domain . '.conf', $conf);
 	}
 
 	protected function _getTemplatePath($template='') {
