@@ -6,7 +6,7 @@ Class VhostShell extends Shell {
 			$this->help();
 			return;
 		}
-		
+
 		$this->create();
 	}
 
@@ -29,14 +29,11 @@ Class VhostShell extends Shell {
 	}
 
 	public function create() {
-		// vars used in the template
+		/*** vars used in the template START ***/
 		$domain  = $this->args[0];
 		$webroot = WWW_ROOT;
 		$logpath = ROOT . DS . APP_DIR . DS . 'tmp' . DS . 'logs' . DS;
-		
-		// BEWARE win apache also needs unix DS
-		$webroot = str_replace('\\', '/', $webroot);
-		$logpath = str_replace('\\', '/', $logpath);
+		/*** vars used in the template END ***/
 
 		$template = 'apache';
 		if (!empty($this->params['t']) && is_file($this->_getTemplatePath($this->params['t']) . $this->params['t'] . '.ctp')) {
@@ -49,18 +46,28 @@ Class VhostShell extends Shell {
 		ob_end_clean();
 
 		$this->out($conf);
-		
-		$this->createFile(ROOT . DS . APP_DIR . DS . 'config' . DS . 'vhost' . DS . $domain . '.conf', $conf);
+
+		$this->createFile(ROOT . DS . APP_DIR . DS . 'Config' . DS . 'Vhost' . DS . $domain . '.conf', $conf);
 	}
 
 	protected function _getTemplatePath($template='') {
-		$app_vhost = ROOT . DS . APP_DIR . DS . 'config' . DS . 'vhost' . DS;
+		$app_vhost = ROOT . DS . APP_DIR . DS . 'Config' . DS . 'Vhost' . DS;
 		if (is_file($app_vhost . $template . '.ctp')) {
-			// app config/vhost/{template}.ctp
+			// app Config/Vhost/{template}.ctp
 			return $app_vhost;
 		} else {
-			// app config/vhost/{template}.ctp
-			return dirname(dirname(dirname(__FILE__))) . DS . 'config' . DS . 'vhost' . DS;
+			// app Config/Vhost/{template}.ctp
+			return dirname(dirname(dirname(__FILE__))) . DS . 'Config' . DS . 'Vhost' . DS;
 		}
+	}
+
+	public function getOptionParser() {
+		$parser = parent::getOptionParser();
+		$parser->addOptions('template', array(
+			'short' => 't',
+			'help' => 'template: apache | nginx',
+			'default' => 'apache',
+		));
+		return $parser;
 	}
 }

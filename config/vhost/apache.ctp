@@ -2,7 +2,7 @@ NameVirtualHost *:80
 
 <VirtualHost *:80>
     DocumentRoot "<?php echo $webroot ?>"
-    ServerName    <?php echo $domain  ?> 
+    ServerName    <?php echo $domain  ?>
 
     ErrorLog  "<?php echo $logpath ?>apache-error.log"
     LogLevel   warn
@@ -13,10 +13,9 @@ NameVirtualHost *:80
     <Directory "<?php echo $webroot ?>">
         Options MultiViews
         AllowOverride All
-        Order allow,deny
-        allow from all
+        Require all granted
         Options +FollowSymLinks +SymLinksIfOwnerMatch
-        
+
         RewriteEngine On
         RewriteCond %{REQUEST_FILENAME} !-d
         RewriteCond %{REQUEST_FILENAME} !-f
