@@ -63,7 +63,7 @@ Class VhostShell extends Shell {
 
 	public function getOptionParser() {
 		$parser = parent::getOptionParser();
-		$parser->addOptions('template', array(
+		$parser->addOption('template', array(
 			'short' => 't',
 			'help' => 'template: apache | nginx',
 			'default' => 'apache',
