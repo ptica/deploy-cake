@@ -1,5 +1,5 @@
 <?php
-Class GruntfileShell extends Shell {
+Class GruntShell extends Shell {
 
 	public function main() {
 		if (empty($this->args)) {
@@ -16,7 +16,7 @@ Class GruntfileShell extends Shell {
 	 */
 	public function help() {
 		$this->hr();
-		$this->out('Usage: cake gruntfile create <sitename> ');
+		$this->out('Usage: cake grunt create <sitename> ');
 		$this->hr();
 		$this->out('Parameters:');
 		$this->out('	<sitename>');
@@ -30,39 +30,54 @@ Class GruntfileShell extends Shell {
 
 	public function create() {
 		// vars used in the template
-		$domain  = $this->args[0];
+		$sitename  = $this->args[0];
 		$webroot = WWW_ROOT;
 		$logpath = ROOT . DS . APP_DIR . DS . 'tmp' . DS . 'logs' . DS;
+		$vars = compact('sitename', 'webroot', 'logpath');
 
 		$template = 'default';
 		if (!empty($this->params['t']) && is_file($this->_getTemplatePath($this->params['t']) . $this->params['t'] . '.ctp')) {
 			$template = $this->params['t'];
 		}
 
-		ob_start();
-		include $this->_getTemplatePath($template) . $template . '.ctp';
-		$conf = ob_get_contents();
-		ob_end_clean();
-
-		$this->out($conf);
-
-		$this->createFile(ROOT . DS . APP_DIR . DS . 'Gruntfile.js', $conf);
+		$templates = array(
+			'Gruntfile.js',
+			'.bowerrc',
+			'bower.json',
+			'INSTALL.md',
+			'package.json',
+			'TODO.md'
+		);
+		foreach ($templates as $template) {
+			$content = $this->renderTemplate($template, $vars);
+			//$this->out($content);
+			$this->createFile(ROOT . DS . APP_DIR . DS . $template, $content);
+		}
 	}
 
 	protected function _getTemplatePath($template='') {
-		$app_config = ROOT . DS . APP_DIR . DS . 'Config' . DS . 'Gruntfile' . DS;
+		$app_config = ROOT . DS . APP_DIR . DS . 'Config' . DS . 'Grunt' . DS;
 		if (is_file($app_config . $template . '.ctp')) {
-			// app Config/Vhost/{template}.ctp
+			// APP/Config/Vhost/{template}.ctp
 			return $app_config;
 		} else {
-			//  Config/Vhost/{template}.ctp
-			return dirname(dirname(dirname(__FILE__))) . DS . 'Config' . DS . 'Gruntfile' . DS;
+			// DeployPlugin/Config/Vhost/{template}.ctp
+			return dirname(dirname(dirname(__FILE__))) . DS . 'Config' . DS . 'Grunt' . DS;
 		}
+	}
+
+	private function renderTemplate($template='', $vars=array()) {
+		extract($vars);
+		ob_start();
+		include $this->_getTemplatePath($template) . $template . '.ctp';
+		$content = ob_get_contents();
+		ob_end_clean();
+		return $content;
 	}
 
 	public function getOptionParser() {
 		$parser = parent::getOptionParser();
-		$parser->addOptions('template', array(
+		$parser->addOption('template', array(
 			'short' => 't',
 			'help' => 'template: default | TBD',
 			'default' => 'default',

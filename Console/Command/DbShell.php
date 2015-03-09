@@ -37,12 +37,13 @@ Class DbShell extends Shell {
 			$db_config = $this->params['c'];
 		}
 
-		echo "CREATE DATABASE `$db_name` COLLATE 'utf8_czech_ci'; GRANT ALL PRIVILEGES ON `$db_name`.* TO `$db_name`@localhost IDENTIFIED BY '{$db_name}_pass'; FLUSH PRIVILEGES";
+		$sql = "CREATE DATABASE `$db_name` COLLATE 'utf8_czech_ci'; CREATE USER `{$db_name}`@localhost IDENTIFIED BY '{$db_name}_pass'; GRANT ALL PRIVILEGES ON `$db_name`.* TO `$db_name`@localhost IDENTIFIED BY '{$db_name}_pass'; FLUSH PRIVILEGES";
+		echo $sql;
 
 		try {
 			$dblink = new PDO('mysql:host=localhost;', 'root',  '', array(PDO::ATTR_PERSISTENT => false));
 			$dblink->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			$dblink->exec("CREATE DATABASE `$db_name` COLLATE 'utf8_czech_ci'; GRANT ALL PRIVILEGES ON `$db_name`.* TO ``@localhost IDENTIFIED BY '{$db_name}_pass'; FLUSH PRIVILEGES");
+			$dblink->exec($sql);
 		} catch (Exception $e) {
 			die('DB Error'. $e->getMessage());
 		}

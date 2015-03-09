@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 					keyword: 'i18n'
 				},
 				files: {
-					'Locale': ['Plugin/BlueUpload/View/Elements/*.hbs', 'webroot/js/karolinum.js']
+					'Locale': ['Plugin/BlueUpload/View/Elements/*.hbs', 'webroot/js/app.js']
 				}
 			}
 		},
@@ -44,8 +44,7 @@ module.exports = function(grunt) {
 					processName: function(filePath) {
 						return filePath
 							.replace(/^Plugin\/BlueUpload\/View\/Elements\//, 'BlueUpload/')
-							.replace(/^View\/Users\//, 'Users/')
-							.replace(/^View\/Bookings\//, 'Bookings/')
+							.replace(/^View\//, '/')
 							.replace(/\.hbs$/, '');
 					}
 				},
@@ -84,7 +83,7 @@ module.exports = function(grunt) {
 					'node_modules/grunt-contrib-handlebars/node_modules/handlebars/dist/handlebars.runtime.js',
 					'webroot/js/templates.js',
 					'webroot/js/messages.js',
-					'webroot/js/karolinum.js'
+					'webroot/js/app.js'
 				],
 				dest: 'webroot/js/site.js',
 				nonull: true,
@@ -102,7 +101,7 @@ module.exports = function(grunt) {
 					'Vendor/blueimp-file-upload/css/jquery.fileupload.css',
 					'Vendor/fullcalendar/dist/fullcalendar.css',
 					'Vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css',
-					'webroot/css/karolinum.css' // includes customized bootstrap
+					'webroot/css/app.css' // includes customized bootstrap
 				],
 				dest: 'webroot/css/site.css',
 				nonull: true,
@@ -118,7 +117,7 @@ module.exports = function(grunt) {
 					compress: true
 				},
 				files: {
-					'webroot/css/karolinum.css':'webroot/css/karolinum.less',
+					'webroot/css/app.css':'webroot/css/app.less',
 				}
 			}
 		},
