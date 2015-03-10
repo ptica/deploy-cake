@@ -36,8 +36,8 @@ Class VhostShell extends Shell {
 		/*** vars used in the template END ***/
 
 		$template = 'apache';
-		if (!empty($this->params['t']) && is_file($this->_getTemplatePath($this->params['t']) . $this->params['t'] . '.ctp')) {
-			$template = $this->params['t'];
+		if (!empty($this->params['template']) && is_file($this->_getTemplatePath($this->params['template']) . $this->params['template'] . '.ctp')) {
+			$template = $this->params['template'];
 		}
 
 		ob_start();
