@@ -1,5 +1,5 @@
 {
-	"name": "ptica/deploy",
+	"name": "ptica/Deploy",
 	"type": "cakephp-plugin",
 	"description": "CakePHP shell for generation of vhost.conf and mysql dbs ",
 	"homepage": "http://github.com/ptica/deploy-cake",
