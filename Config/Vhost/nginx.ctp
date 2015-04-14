@@ -28,9 +28,9 @@ server {
                 if (-d $request_filename) {
                         break;
                 }
-                rewrite ^(.+)$ /index.php?q=$1 last;
+                rewrite ^(.+)$ /index.php last;
         }
-        
+
         location /favicon.ico {
                 # empty content
                 return 204;
@@ -54,14 +54,14 @@ server {
         # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
         #
         location ~ \.php1$ {
-                fastcgi_pass 127.0.0.1:9000;
+                fastcgi_pass php;
                 fastcgi_index index.php;
                 include fastcgi_params;
         }
-        
+
         location ~ .php$ {
                 root   <?php echo $webroot ?>;
-                fastcgi_pass   127.0.0.1:9000;
+                fastcgi_pass   php;
                 fastcgi_index  index.php;
                 fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
                 include fastcgi_params;

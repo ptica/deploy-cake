@@ -19,6 +19,6 @@ NameVirtualHost *:80
         RewriteEngine On
         RewriteCond %{REQUEST_FILENAME} !-d
         RewriteCond %{REQUEST_FILENAME} !-f
-        RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+        RewriteRule ^(.*)$ index.php [QSA,L]
     </Directory>
 </VirtualHost>
